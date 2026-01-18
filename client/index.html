@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Collaborative Canvas</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">CC</div>
+        <div>
+          <div class="title">Collaborative Canvas</div>
+          <div class="sub" id="roomLabel">Room: lobby</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <label class="label">Name</label>
+          <input id="nameInput" class="input" maxlength="20" placeholder="Your name" />
+        </div>
+
+        <div class="row">
+          <label class="label">Tool</label>
+          <div class="seg">
+            <button id="brushBtn" class="segBtn active">Brush</button>
+            <button id="eraserBtn" class="segBtn">Eraser</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="label">Color</label>
+          <input id="colorInput" class="input" type="color" value="#3b82f6" />
+        </div>
+
+        <div class="row">
+          <label class="label">Stroke width</label>
+          <input id="widthInput" class="range" type="range" min="1" max="60" value="8" />
+          <div class="hint" id="widthHint">8</div>
+        </div>
+
+        <div class="row buttons">
+          <button id="undoBtn" class="btn">Undo</button>
+          <button id="redoBtn" class="btn">Redo</button>
+        </div>
+
+        <div class="row meta">
+          <div class="pill" id="connPill">Connecting</div>
+          <div class="pill" id="latPill">RTT: -</div>
+        </div>
+
+        <div class="row help">
+          <div class="helpTitle">Controls</div>
+          <ul>
+            <li>Draw: click or touch and drag</li>
+            <li>Pan: hold Space and drag</li>
+            <li>Zoom: mouse wheel or trackpad</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <div class="label">Online</div>
+          <div class="hint" id="onlineCount">0</div>
+        </div>
+        <div id="userList" class="userList"></div>
+      </div>
+    </aside>
+
+    <main class="canvasWrap">
+      <div class="canvasTopBar">
+        <div class="small">Tip: open another tab (incognito) to test multi-user.</div>
+      </div>
+
+      <!-- Two-layer canvas for performance:
+           - baseCanvas: committed strokes
+           - liveCanvas: in-progress strokes + cursors -->
+      <div class="canvasStage" id="stage">
+        <canvas id="baseCanvas"></canvas>
+        <canvas id="liveCanvas"></canvas>
+      </div>
+    </main>
+  </div>
+
+  <!-- Socket.io client served by the server -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
